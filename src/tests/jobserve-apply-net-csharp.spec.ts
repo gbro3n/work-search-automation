@@ -26,10 +26,13 @@ test('jobserve-apply-net-csharp', async ({ page }) => {
   // Iterate over all h3 headings under #jsJobResContent
   const headings = await page1.locator('#jsJobResContent h3').elementHandles();
   for (const heading of headings) {
+    await page1.waitForTimeout(1000);
     await heading.click();
     await page1.waitForTimeout(2000); // wait for 2 seconds
+    // Log the job title from the heading
+    const jobTitle = await heading.textContent();
+    console.log(`Applying for job: ${jobTitle?.trim()}`);
     const applyBtn = await page1.$('#td_apply_btn');
-    //const appliedBtn = await page1.$('#td_applied_btn');
     if (!applyBtn) continue;
     await page1.locator('#td_apply_btn').click();
     
@@ -48,4 +51,9 @@ test('jobserve-apply-net-csharp', async ({ page }) => {
     await appFrame.getByRole('link', { name: 'Apply' }).first().click();
     await page1.getByRole('button', { name: 'close' }).click();
   }
+
+  // Wait to see what browser was last working on
+
+  await page1.waitForTimeout(10000);
 });
+
