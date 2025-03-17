@@ -32,9 +32,24 @@ test('jobserve-apply-net-csharp', async ({ page }) => {
     // Log the job title from the heading
     const jobTitle = await heading.textContent();
     console.log(`Applying for job: ${jobTitle?.trim()}`);
-    const applyBtn = await page1.$('#td_apply_btn');
-    if (!applyBtn) continue;
-    await page1.locator('#td_apply_btn').click();
+    
+    const tdApplyBtn = await page1.$('#td_apply_btn')
+    const applyBtn = await page1.$('#apply_btn');
+    
+    if (!tdApplyBtn && !applyBtn) continue;
+
+    if(tdApplyBtn)
+    {
+        await page1.locator('#td_apply_btn').click();
+    }
+    else
+    {
+        // apply_btn seems to be non easy apply
+
+        continue;
+
+        // await page1.locator('#apply_btn').click();
+    }
     
     // Proceed with application process
     const appFrame = await page1.locator('#appFrame').contentFrame();
